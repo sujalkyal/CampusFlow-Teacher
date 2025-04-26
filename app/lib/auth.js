@@ -1,5 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import db from "@repo/db/client";
+import db from "../../db/src/index";
 import bcrypt from "bcrypt";
 
 export const authOptions = {
@@ -46,6 +46,6 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET || "secret",
   pages: {
-    signIn: "/auth/signin", // Specify the path to your custom sign-in page
+    signIn: "/auth/signin",
   },
 };

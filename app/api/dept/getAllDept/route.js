@@ -1,7 +1,7 @@
 // returns all the departments
 
 import { NextResponse } from "next/server";
-import db from "@repo/db/client";
+import db from "../../../../db/src/index";
 
 export async function GET() {
   try {

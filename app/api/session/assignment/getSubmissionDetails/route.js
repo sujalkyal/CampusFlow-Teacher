@@ -1,7 +1,7 @@
 // route to return submission details for the assignment for surrent session
 
 import { NextResponse } from "next/server";
-import prisma from "@repo/db/client";
+import prisma from "../../../../../db/src/index";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
 
@@ -26,8 +26,6 @@ export async function POST(req) {
         }
     });
 
-    //console.log(" Student Submissions :  ", studentSubmissions);
-
     const students = await prisma.student.findMany({
         where: {
             id: {
@@ -36,6 +34,5 @@ export async function POST(req) {
         },
     });
 
-    //console.log(" Students :  ", students);
     return NextResponse.json(students, { status: 200 });
 }

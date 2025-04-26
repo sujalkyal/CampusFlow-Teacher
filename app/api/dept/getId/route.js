@@ -1,7 +1,7 @@
 // get id from name
 
 import { NextResponse } from "next/server";
-import db from "@repo/db/client";
+import db from "../../../../db/src/index";
 import { authOptions } from "../../../lib/auth";
 import { getServerSession } from "next-auth/next";
 

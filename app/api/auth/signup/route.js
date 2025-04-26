@@ -1,4 +1,4 @@
-import prisma from "@repo/db/client";
+import prisma from "../../../../db/src/index";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
@@ -31,18 +31,6 @@ export async function POST(request) {
         subjects: subjectIds, // Storing as an array
       },
     });
-
-    // update teacher_id in subjects with subjectIds
-    // await prisma.subject.updateMany({
-    //   where: {
-    //     id: {
-    //       in: subjectIds,
-    //     },
-    //   },
-    //   data: {
-    //     teacher_id: newTeacher.id,
-    //   },
-    // });
 
     return NextResponse.json({ message: "Signup successful", user: newTeacher }, { status: 201 });
   } catch (error) {
