@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id        String     @id @default(uuid())
+  name      String?
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  batches   String[]
+  dept_id   String
+  subjects  String[]
+  image     String?
+  dept      Department @relation(fields: [dept_id], references: [id])
+}
+
+model Student {
+  id          String       @id @default(uuid())
+  name        String?
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  batch_id    String
+  dept_id     String
+  image       String?
+  attendance  Attendance[]
+  batch       Batch        @relation(fields: [batch_id], references: [id])
+  dept        Department   @relation(fields: [dept_id], references: [id])
+  submissions Submission[]
+}
+
+model Department {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  batches   Batch[]
+  students  Student[]
+  teachers  Teacher[]
+}
+
+model Batch {
+  id        String     @id @default(uuid())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  dept_id   String
+  dept      Department @relation(fields: [dept_id], references: [id])
+  students  Student[]
+  subjects  Subject[]
+}
+
+model Subject {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  batch_id  String
+  notes     Note[]
+  sessions  Session[]
+  batch     Batch     @relation(fields: [batch_id], references: [id])
+}
+
+model Note {
+  id          String   @id @default(uuid())
+  title       String?
+  description String?
+  files       String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  subject_id  String
+  subject     Subject  @relation(fields: [subject_id], references: [id])
+}
+
+model Session {
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  date          DateTime
+  subject_id    String
+  assignment_id String?
+  title         String?
+  attendance    Attendance[]
+  subject       Subject      @relation(fields: [subject_id], references: [id])
+}
+
+model Assignment {
+  id          String       @id @default(uuid())
+  title       String?
+  description String?
+  files       String[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  session_id  String
+  endDate     DateTime?
+  submissions Submission[]
+}
+
+model Attendance {
+  id         String  @id @default(uuid())
+  status     Status
+  student_id String
+  session_id String
+  session    Session @relation(fields: [session_id], references: [id])
+  student    Student @relation(fields: [student_id], references: [id])
+
+  @@unique([student_id, session_id])
+}
+
+model Submission {
+  id            String     @id @default(uuid())
+  files         String[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  student_id    String
+  assignment_id String
+  assignment    Assignment @relation(fields: [assignment_id], references: [id])
+  student       Student    @relation(fields: [student_id], references: [id])
+}
+
+enum Status {
+  PRESENT
+  ABSENT
+  LATE
+}
