@@ -3,7 +3,7 @@ import { Trash2, Plus, X, FileText, ExternalLink, Upload, Loader } from 'lucide-
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEdgeStore } from '../../../teacher/app/lib/edgestore';
+import { useEdgeStore } from '../../app/lib/edgestore';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FilesUploadModal = ({ assignmentId, files, setFiles, onClose }) => {
